@@ -1,0 +1,8 @@
+lagoons:
+  lagoon:
+    graphql: ${INPUT_LAGOON_GRAPHQL_ENDPOINT:-https://api.lagoon.amazeeio.cloud/graphql}
+    hostname: ${INPUT_LAGOON_SSH_HOSTNAME:-ssh.lagoon.amazeeio.cloud}
+    ui: ${INPUT_LAGOON_UI:-https://dashboard.amazeeio.cloud}
+    kibana: ${INPUT_LAGOON_KIBANA:-https://logs.amazeeio.cloud/}
+    port: "${INPUT_LAGOON_PORT:-32222}"
+    token: 

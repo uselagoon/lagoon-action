@@ -1,0 +1,58 @@
+name: 'Lagoon Action'
+description: 'Run Interact with a Lagoon API.'
+author: 'Lagoon Team'
+branding:
+  icon: 'play'
+  color: 'blue'
+
+inputs:
+  action:
+    description: 'One of the following actions: deploy (default), upsert_variable'
+    required: true
+    default: 'deploy'
+  ssh_private_key:
+    description: 'SSH private key for Lagoon authentication'
+    required: true
+  lagoon_graphql_endpoint:
+    description: 'Lagoon GraphQL endpoint'
+    required: false
+    default: https://api.lagoon.amazeeio.cloud/graphql
+  lagoon_ssh_hostname:
+    description: 'Lagoon SSH hostname'
+    required: false
+    default: ssh.lagoon.amazeeio.cloud
+  lagoon_port:
+    description: 'Lagoon SSH port'
+    required: false
+    default: 32222
+  lagoon_project:
+    description: 'Lagoon project name'
+    required: false
+  lagoon_environment:
+    description: 'Lagoon environment name'
+    required: false
+  wait_for_deployment:
+    description: 'Wait for deployment to finish'
+    required: false
+    default: false
+  variable_scope:
+    description: 'If action is upsert_variable, this is the variable scope (runtime,build)'
+    required: false
+    default: 'runtime'
+  variable_name:
+    description: 'If action is upsert_variable, this is the variable name'
+    required: false
+  variable_value:
+    description: 'If action is upsert_variable, this is the variable value'
+    required: false
+  max_deployment_timeout:
+    description: 'Maximum time (minutes) to wait for deployment - defaults to 30 minutes.'
+    required: false
+    default: 30
+  debug:
+    description: 'Enable debug output'
+    required: false
+    default: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
