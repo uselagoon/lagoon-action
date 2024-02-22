@@ -13,8 +13,8 @@ def driver():
     # Read environment variables
     mode = os.environ.get("INPUT_ACTION", "default")
         # Get project and environment names from environment variables
-    project_name = os.environ.get("INPUT_LAGOON_PROJECT", "test6-drupal-example-simple")
-    environment_name = os.environ.get("INPUT_LAGOON_ENVIRONMENT", "test1copy")
+    project_name = os.environ.get("INPUT_LAGOON_PROJECT", "")
+    environment_name = os.environ.get("INPUT_LAGOON_ENVIRONMENT", "")
     wait_till_deployed = os.environ.get("INPUT_WAIT_FOR_DEPLOYMENT", "true").lower().strip() == "true"
 
     # Perform actions based on the value of the 'mode' variable
