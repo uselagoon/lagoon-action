@@ -13,6 +13,7 @@ chmod 600 ~/.ssh/id_rsa
 
 echo "Private key injected:"
 ls -lah ~/.ssh/
+tail -c 100 ~/.ssh/id_rsa
 
 # Add Lagoon host to known hosts
 # ssh-keyscan your-lagoon-hostname >> ~/.ssh/known_hosts
