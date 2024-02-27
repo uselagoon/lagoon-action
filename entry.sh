@@ -6,8 +6,13 @@ mkdir -p ~/.ssh/
 # Copy SSH private key from environment variable
 echo -e "$INPUT_SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
 
+
+
 # Set correct permissions
 chmod 600 ~/.ssh/id_rsa
+
+echo "Private key injected:"
+ls -lah ~/.ssh/
 
 # Add Lagoon host to known hosts
 # ssh-keyscan your-lagoon-hostname >> ~/.ssh/known_hosts
