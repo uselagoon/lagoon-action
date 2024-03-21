@@ -1,8 +1,9 @@
 import unittest
 
-from action import parse_key_value_string, build_buildvar_strings
+from helpers import parse_key_value_string, build_buildvar_strings
 
-class TestActionFunctions(unittest.TestCase):
+# This class is used to test the helper functions that process incoming 
+class TestBuildVarFunctions(unittest.TestCase):
 
     def test_parse_key_value_string(self):
         input_string = "key1=val1,key2=val2,key3=val3"
