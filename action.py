@@ -9,6 +9,7 @@ LAGOON_NAME = os.environ.get("INPUT_LAGOON_NAME", "lagoon")
 class LagoonCLIError(Exception):
     pass
 
+
 def driver():
     # Read environment variables
     mode = os.environ.get("INPUT_ACTION", "default")
@@ -242,6 +243,34 @@ def run_lagoon_command(command):
         print(f"Command output: {e.output.decode('utf-8')}")
         print(f"Command error: {e.stderr.decode('utf-8')}")
         raise LagoonCLIError(f"Error executing Lagoon CLI command: {e}")
+
+def parse_key_value_string(input_string):
+    """
+    Parses a string with format "key1=val1,key2=val2,...,keyn=valn" into a dictionary.
+    Splits only on the first '=' in each pair.
+
+    Args:
+        input_string (str): Input string with key-value pairs.
+
+    Returns:
+        dict: A dictionary with keys and corresponding values.
+    
+    Raises:
+        ValueError: If the input string is not in the expected format.
+    """
+    if not input_string:  # Empty string is considered valid
+        return {}
+
+    key_value_pairs = input_string.split(',')
+    key_value_map = {}
+    for pair in key_value_pairs:
+        if '=' not in pair:
+            raise ValueError("Invalid input string format.")
+        
+        key, value = pair.split('=', 1) 
+        key_value_map[key.strip()] = value.strip()
+    
+    return key_value_map
 
 if __name__ == "__main__":
     driver()
