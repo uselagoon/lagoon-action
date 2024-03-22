@@ -83,7 +83,7 @@ def deploy_environment(project_name, environment_name, buildVars, wait_till_depl
     buildVarArgumentString = ' '.join(stringMap)
     # Lagoon CLI command to deploy the latest version with --output-json flag
     lagoon_command = (
-        f"lagoon -l {LAGOON_NAME} --returnData --force --output-json -i ~/.ssh/id_rsa deploy branch "
+        f"lagoon -l {LAGOON_NAME} --skip-update-check --returnData --force --output-json -i ~/.ssh/id_rsa deploy branch "
         f"-p {project_name} -b {environment_name} {buildVarArgumentString}"
     )
 
@@ -111,7 +111,7 @@ def deploy_pull_request(project_name, pr_title, pr_number, baseBranchName, baseB
 
     # Lagoon CLI command to deploy the latest version with --output-json flag
     lagoon_command = (
-        f"lagoon -l {LAGOON_NAME} --returnData --force --output-json -i ~/.ssh/id_rsa deploy pullrequest "
+        f"lagoon -l {LAGOON_NAME} --skip-update-check --returnData --force --output-json -i ~/.ssh/id_rsa deploy pullrequest "
         f"-p '{project_name}' --baseBranchName '{baseBranchName}' --baseBranchRef '{baseBranchRef}' "
         f"--headBranchName '{headBranchName}' --headBranchRef {headBranchRef} "
         f"--title '{pr_title}' --number {pr_number} {buildVarArgumentString}"
@@ -222,7 +222,7 @@ def upsert_variable(project_name, environment_name, variable_scope, variable_nam
     
     # Lagoon CLI command to deploy the latest version with --output-json flag
     lagoon_command = (
-        f"lagoon -l {LAGOON_NAME} --force --output-json -i ~/.ssh/id_rsa update variable "
+        f"lagoon -l {LAGOON_NAME} --skip-update-check --force --output-json -i ~/.ssh/id_rsa update variable "
         f"-p {project_name} -e {environment_name} -N '{variable_name}' -V '{variable_value}' -S {variable_scope}"
     )
 
