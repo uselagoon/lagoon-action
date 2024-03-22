@@ -25,7 +25,7 @@ def driver():
             buildVarString = os.environ.get("INPUT_BUILD_VARS")
             buildVars = {}
             if(buildVarString != ""):
-                buildVars = parse_key_value_string(input_string)
+                buildVars = parse_key_value_string(buildVarString)
             # We grab the event data from the payload file Github injects
             json_data = process_github_event_file()
             if json_data.get("pull_request") is not None:
