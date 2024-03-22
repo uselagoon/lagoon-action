@@ -1,6 +1,6 @@
 # Use the uselagoon/lagoon-cli as a base image
 # FROM uselagoon/lagoon-cli as base
-FROM ghcr.io/uselagoon/lagoon-cli:main as base
+FROM ghcr.io/uselagoon/lagoon-cli:v0.21.0 as base
 
 
 RUN apk update && apk upgrade && apk add python3 py3-pip
