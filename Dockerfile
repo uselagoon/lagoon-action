@@ -10,7 +10,7 @@ RUN wget -q https://github.com/kreuzwerker/envplate/releases/download/v1.0.2/env
 
 # Copy the entry script and set correct permissions
 COPY entry.sh /entry.sh
-COPY action.py /action.py
+COPY *.py /
 RUN chmod +x /entry.sh
 
 # copy across the lagoon.yaml file
