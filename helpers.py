@@ -38,7 +38,7 @@ def build_buildvar_strings(key_value_map):
     """
     buildvar_strings = []
     for key, value in key_value_map.items():
-        buildvar_string = f"--buildvar {key}={value}"
+        buildvar_string = f"--buildvar '{key}'='{value}'"
         buildvar_strings.append(buildvar_string)
     
     return buildvar_strings
