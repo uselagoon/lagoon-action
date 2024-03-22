@@ -74,13 +74,8 @@ def deploy_environment(project_name, environment_name, wait_till_deployed=True):
 
     # Lagoon CLI command to deploy the latest version with --output-json flag
     lagoon_command = (
-<<<<<<< HEAD
-        f"lagoon -l {LAGOON_NAME} --returnData --force --output-json -i ~/.ssh/id_rsa deploy branch "
-        f"-p {project_name} -b {environment_name}"
-=======
         f"lagoon -l {LAGOON_NAME} --skip-update-check --returnData --force --output-json -i ~/.ssh/id_rsa deploy branch "
-        f"-p {project_name} -b {environment_name} {buildVarArgumentString}"
->>>>>>> 015120c (adds --skip-update-check to lagoon commands)
+        f"-p {project_name} -b {environment_name}"
     )
 
     debugLog(f"Running Lagoon CLI command: {lagoon_command}")
