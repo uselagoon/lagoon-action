@@ -49,6 +49,10 @@ inputs:
     description: 'Maximum time (minutes) to wait for deployment - defaults to 30 minutes.'
     required: false
     default: 30
+  build_vars:
+    description: 'A comma separated list of key values that will be injected into the build as environment variables (e.g. "key1=val1,key2=val2[... ,keyn=valn]")'
+    required: false
+    default: ''
   debug:
     description: 'Enable debug output'
     required: false

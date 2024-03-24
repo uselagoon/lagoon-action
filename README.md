@@ -109,6 +109,12 @@ To use this GitHub Action, you'll need to set up the following:
 
 **Default:** 30
 
+#### `build_vars`
+
+**Description:** Provides a mechanism to send build variables to be consumed in a deployment (these are not persisted) - format is `KEYNAME=VALUE[,KEY2NAME=VALUE2]`
+
+**Required:** No
+
 ### Action: upsert_variable
 
 #### `variable_scope`
@@ -157,13 +163,14 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Lagoon Deployment
-      uses: uselagoon/lagoon-action@v1
+      uses: uselagoon/lagoon-action@v1.0.1
       with:
         action: 'deploy'
         ssh_private_key: ${{ secrets.LAGOON_SSH_PRIVATE_KEY }}
         lagoon_project: 'your-project-name'
         lagoon_environment: 'your-environment-name'
         wait_for_deployment: 'true'
+        build_vars: "VARIABLE1=VALUE1,VARIABLE2=VALUE2"
 
   upsert-variable:
     runs-on: ubuntu-latest

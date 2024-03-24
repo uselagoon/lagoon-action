@@ -2,12 +2,14 @@ import os
 import subprocess
 import json
 import time
+from helpers import build_buildvar_strings, parse_key_value_string
 
 global LAGOON_NAME
 LAGOON_NAME = os.environ.get("INPUT_LAGOON_NAME", "lagoon")
 
 class LagoonCLIError(Exception):
     pass
+
 
 def driver():
     # Read environment variables
@@ -20,6 +22,10 @@ def driver():
     # Perform actions based on the value of the 'mode' variable
     try:
         if mode == "deploy":
+            buildVarString = os.environ.get("INPUT_BUILD_VARS")
+            buildVars = {}
+            if(buildVarString != ""):
+                buildVars = parse_key_value_string(buildVarString)
             # We grab the event data from the payload file Github injects
             json_data = process_github_event_file()
             if json_data.get("pull_request") is not None:
@@ -50,11 +56,11 @@ def driver():
                 
                 print(f"Deploying PR: {prTitle} (#{prNumber}) from {headBranchName} to {baseBranchName}")
 
-                deploy_pull_request(project_name, prTitle, prNumber, baseBranchName, baseBranchRef, headBranchName, headBranchRef, wait_till_deployed)
+                deploy_pull_request(project_name, prTitle, prNumber, baseBranchName, baseBranchRef, headBranchName, headBranchRef, buildVars, wait_till_deployed)
             else:
                 #we're dealing with a branch
                 print(f"Deploying branch: {project_name} (environment{environment_name})")
-                deploy_environment(project_name, environment_name, wait_till_deployed)
+                deploy_environment(project_name, environment_name, buildVars, wait_till_deployed)
         elif mode == "upsert_variable":
             variable_scope = os.environ.get("INPUT_VARIABLE_SCOPE","runtime")
             variable_name = os.environ.get("INPUT_VARIABLE_NAME", "")
@@ -67,15 +73,18 @@ def driver():
         print(f"Error: {e}")
         exit(1)
 
-def deploy_environment(project_name, environment_name, wait_till_deployed=True):
+def deploy_environment(project_name, environment_name, buildVars, wait_till_deployed=True):
     
     if not project_name or not environment_name:
         raise LagoonCLIError("Missing project or environment name.")
 
+    #generate build vars from keyval array
+    stringMap = build_buildvar_strings(buildVars)
+    buildVarArgumentString = ' '.join(stringMap)
     # Lagoon CLI command to deploy the latest version with --output-json flag
     lagoon_command = (
         f"lagoon -l {LAGOON_NAME} --skip-update-check --returnData --force --output-json -i ~/.ssh/id_rsa deploy branch "
-        f"-p {project_name} -b {environment_name}"
+        f"-p {project_name} -b {environment_name} {buildVarArgumentString}"
     )
 
     debugLog(f"Running Lagoon CLI command: {lagoon_command}")
@@ -91,19 +100,21 @@ def deploy_environment(project_name, environment_name, wait_till_deployed=True):
 
     return build_id
 
-def deploy_pull_request(project_name, pr_title, pr_number, baseBranchName, baseBranchRef, headBranchName, headBranchRef, wait_till_deployed=True):
+def deploy_pull_request(project_name, pr_title, pr_number, baseBranchName, baseBranchRef, headBranchName, headBranchRef, buildVars, wait_till_deployed=True):
     
     if not project_name:
         raise LagoonCLIError("Missing project name.")
 
-    # print(f"Beginning deployment of {project_name}:{environment_name}")
+    #generate build vars from keyval array
+    stringMap = build_buildvar_strings(buildVars)
+    buildVarArgumentString = ' '.join(stringMap)
 
     # Lagoon CLI command to deploy the latest version with --output-json flag
     lagoon_command = (
         f"lagoon -l {LAGOON_NAME} --skip-update-check --returnData --force --output-json -i ~/.ssh/id_rsa deploy pullrequest "
         f"-p '{project_name}' --baseBranchName '{baseBranchName}' --baseBranchRef '{baseBranchRef}' "
         f"--headBranchName '{headBranchName}' --headBranchRef {headBranchRef} "
-        f"--title '{pr_title}' --number {pr_number}"
+        f"--title '{pr_title}' --number {pr_number} {buildVarArgumentString}"
     )
 
     debugLog(f"Running Lagoon CLI command: {lagoon_command}")  
