@@ -1,6 +1,6 @@
 # Use the uselagoon/lagoon-cli as a base image
 # FROM uselagoon/lagoon-cli as base
-FROM ghcr.io/uselagoon/lagoon-cli:main as base
+FROM ghcr.io/uselagoon/lagoon-cli:v0.21.0 as base
 
 
 RUN apk update && apk upgrade && apk add python3 py3-pip
@@ -10,7 +10,7 @@ RUN wget -q https://github.com/kreuzwerker/envplate/releases/download/v1.0.2/env
 
 # Copy the entry script and set correct permissions
 COPY entry.sh /entry.sh
-COPY action.py /action.py
+COPY *.py /
 RUN chmod +x /entry.sh
 
 # copy across the lagoon.yaml file
