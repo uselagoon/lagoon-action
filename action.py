@@ -18,6 +18,7 @@ def driver():
     project_name = os.environ.get("INPUT_LAGOON_PROJECT", "")
     environment_name = os.environ.get("INPUT_LAGOON_ENVIRONMENT", "")
     wait_till_deployed = os.environ.get("INPUT_WAIT_FOR_DEPLOYMENT", "true").lower().strip() == "true"
+    branchRef = os.environ.get("INPUT_BRANCH_REF", "")
 
     # Perform actions based on the value of the 'mode' variable
     try:
@@ -60,6 +61,7 @@ def driver():
             else:
                 #we're dealing with a branch
                 print(f"Deploying branch: {project_name} (environment{environment_name})")
+
                 deploy_environment(project_name, environment_name, branchRef, buildVars, wait_till_deployed)
         elif mode == "upsert_variable":
             variable_scope = os.environ.get("INPUT_VARIABLE_SCOPE","runtime")
