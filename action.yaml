@@ -31,6 +31,9 @@ inputs:
   lagoon_environment:
     description: 'Lagoon environment name'
     required: false
+  branch_ref:
+    description: 'Git branch ref to deploy'
+    required: false
   wait_for_deployment:
     description: 'Wait for deployment to finish'
     required: false

@@ -60,7 +60,7 @@ def driver():
             else:
                 #we're dealing with a branch
                 print(f"Deploying branch: {project_name} (environment{environment_name})")
-                deploy_environment(project_name, environment_name, buildVars, wait_till_deployed)
+                deploy_environment(project_name, environment_name, branchRef, buildVars, wait_till_deployed)
         elif mode == "upsert_variable":
             variable_scope = os.environ.get("INPUT_VARIABLE_SCOPE","runtime")
             variable_name = os.environ.get("INPUT_VARIABLE_NAME", "")
@@ -73,7 +73,7 @@ def driver():
         print(f"Error: {e}")
         exit(1)
 
-def deploy_environment(project_name, environment_name, buildVars, wait_till_deployed=True):
+def deploy_environment(project_name, environment_name, branchRef, buildVars, wait_till_deployed=True):
     
     if not project_name or not environment_name:
         raise LagoonCLIError("Missing project or environment name.")
@@ -81,10 +81,16 @@ def deploy_environment(project_name, environment_name, buildVars, wait_till_depl
     #generate build vars from keyval array
     stringMap = build_buildvar_strings(buildVars)
     buildVarArgumentString = ' '.join(stringMap)
+
+    #build up the branch ref argument, if present
+    branchRefArg = ''
+    if branchRef != '':
+        branchRefArg = f"--branchRef={branchRef}"
+
     # Lagoon CLI command to deploy the latest version with --output-json flag
     lagoon_command = (
         f"lagoon -l {LAGOON_NAME} --skip-update-check --returnData --force --output-json -i ~/.ssh/id_rsa deploy branch "
-        f"-p {project_name} -b {environment_name} {buildVarArgumentString}"
+        f"-p {project_name} -b {environment_name} {buildVarArgumentString} {branchRefArg}"
     )
 
     debugLog(f"Running Lagoon CLI command: {lagoon_command}")
