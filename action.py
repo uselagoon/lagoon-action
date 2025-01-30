@@ -90,7 +90,11 @@ def deploy_environment(project_name, environment_name, buildVars, wait_till_depl
     debugLog(f"Running Lagoon CLI command: {lagoon_command}")
 
     # Call the Lagoon CLI command and capture the output
-    build_id = run_lagoon_command(lagoon_command)
+    output = run_lagoon_command(lagoon_command)
+
+    # grab buildid
+    result_json = json.loads(output)
+    build_id = result_json["result"]
 
     debugLog(f"Deployment initiated. Build ID: {build_id}")
 
@@ -120,7 +124,9 @@ def deploy_pull_request(project_name, pr_title, pr_number, baseBranchName, baseB
     debugLog(f"Running Lagoon CLI command: {lagoon_command}")  
 
     # Call the Lagoon CLI command and capture the output
-    build_id = run_lagoon_command(lagoon_command)
+    output = run_lagoon_command(lagoon_command)
+    result_json = json.loads(output)
+    build_id = result_json["result"]
 
     debugLog(f"Deployment initiated. Build ID: {build_id}")
 
