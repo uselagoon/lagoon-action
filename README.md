@@ -180,7 +180,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Lagoon Upsert Variable
-      uses: uselagoon/lagoon-action@v1
+      uses: uselagoon/lagoon-action@v1.0.1
       with:
         action: 'upsert_variable'
         ssh_private_key: ${{ secrets.LAGOON_SSH_PRIVATE_KEY }}
